@@ -1,0 +1,58 @@
+body{
+    background-color:ghostwhite;
+}
+
+.logo{
+    color: rgb(84, 40, 125);
+    font-size: 2rem;
+}
+.logo > a{
+    text-decoration: none;
+}
+
+.logout{
+    position: absolute;
+    text-decoration: none;
+    /* margin-left: auto; */
+    right: 10px;
+    top: 10px;
+
+}
+
+.logged > span{
+    color: rgb(84, 40, 125);
+}
+
+
+.not-logged{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+    width: 300px;
+    /* flex-basis: 100%; */
+}
+
+input{
+    margin-bottom: 12px;
+    height: 1.5rem;
+}
+
+button{
+    background-color: rgb(84, 40, 125);
+    color: aliceblue;
+    border: 0px;
+    height: 26px;
+    border-radius: 2px;
+}
+
+.not-logged > h1{
+   margin-left: -120px;
+}
