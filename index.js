@@ -87,10 +87,15 @@ app.post("/sign-up", validateUser, async (req, res, next) => {
                         password: hashedPassword,
                     },
                 })
+                req.login(user, (err)=>{
+                  if(err){
+                    return next(err);
+                  }
+                  res.redirect("/");
+                })
             }
         })
-        res.status(201).json({message: 'User created successfully'});
-        res.redirect("/");
+
     } catch(err) {
       return next(err);
     }
