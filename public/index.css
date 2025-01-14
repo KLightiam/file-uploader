@@ -51,6 +51,7 @@ button{
     border: 0px;
     height: 26px;
     border-radius: 2px;
+    cursor: pointer;
 }
 
 .not-logged > h1{

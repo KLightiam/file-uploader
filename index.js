@@ -1,6 +1,7 @@
 const path = require("node:path");
 const express = require("express");
 const session = require("express-session");
+const {PrismaSessionStore} = require('@quixo3/prisma-session-store');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcryptjs");
@@ -16,7 +17,24 @@ app.set("view engine", "ejs");
 
 app.use(express.static('public'));
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    cookie:{
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    },
+    secret: "cats", 
+    resave: false, 
+    saveUninitialized: false,
+    store: new PrismaSessionStore(
+      prisma,
+      {
+        checkPeriod: 2 * 60 * 1000,
+        dbRecordIdIsSessionId: true,
+        dbRecordIdFunction: undefined,
+      }
+    )
+  })
+);
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
