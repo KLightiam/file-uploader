@@ -45,6 +45,17 @@ input{
     height: 1.5rem;
 }
 
+.files-container{
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr 1fr;
+    gap: 5px;
+}
+
+.filename-heading{
+    font-size: 1.5rem;
+    height: 1.5rem;
+}
+
 button{
     background-color: rgb(84, 40, 125);
     color: aliceblue;
@@ -54,6 +65,14 @@ button{
     cursor: pointer;
 }
 
+
 .not-logged > h1{
    margin-left: -120px;
+}
+
+
+.upload-file{
+    display: flex;
+    place-content: center;
+    margin-top: 4rem;
 }

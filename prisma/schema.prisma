@@ -17,6 +17,7 @@ model User {
   id        String   @id @default(cuid())
   username  String   @unique
   password  String
+  files File[]
 }
 
 model Session {
@@ -24,4 +25,12 @@ model Session {
   sid       String   @unique
   data      String   
   expiresAt   DateTime
+}
+
+model File {
+  id String @id @default(cuid())
+  name String
+  storedName String?
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId String 
 }

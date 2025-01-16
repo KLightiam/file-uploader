@@ -1,6 +1,7 @@
 const path = require("node:path");
 const express = require("express");
 const session = require("express-session");
+const multer = require('multer');
 const {PrismaSessionStore} = require('@quixo3/prisma-session-store');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
@@ -9,6 +10,7 @@ const {PrismaClient} = require('@prisma/client');
 const {body, validationResult} = require("express-validator");
 const prisma = new PrismaClient();
 
+const upload = multer({dest: "./public/data/uploads/",limits:{fileSize: 1024*1024*5}});
 
 const app = express();
 
@@ -36,7 +38,7 @@ app.use(
   })
 );
 app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => res.render("index", {user: req.user}));
 //// app.js
@@ -127,6 +129,9 @@ app.post("/sign-up", validateUser, async (req, res, next) => {
                 where:{
                     username: username,
                 },
+                include:{
+                  files: true
+                }
             })
             if(!user){
                 return done(null, false, {message: "Incorrect username"});
@@ -150,6 +155,9 @@ app.post("/sign-up", validateUser, async (req, res, next) => {
             where:{
                 id:id,
             },
+            include:{
+              files: true
+            }
         })
         done(null, user);
     }catch(err){
@@ -165,9 +173,50 @@ app.post("/log-in",
     })
 );
   
+//uploads
+app.post('/:id/uploads', upload.array('upload',10), (req,res,next)=>{
+  try{
+    if(!req.files || req.files.length === 0){
+    return res.redirect('/');
+    }
+   const userId = req.params.id;
+  //  console.log(username);
 
+
+  //  const fileDetails = req.files.map((file)=>{
+  //   return{
+  //     name: file.originalname,
+  //     size: (file.size / 1024).toFixed(2),
+  //     path: file.path
+  //   }
+  //  })
+  const files = req.files;
+  files.forEach(async(file)=>{
+     await prisma.user.update({
+      where:{
+        id:userId
+      },
+      data:{
+        files:{
+          create:{
+            name: file.originalname,
+            storedName: file.filename
+          }
+        }
+      }
+     })
+  })
+
+  res.redirect('/');
+   
+
+  }catch(err){
+    console.log(err);
+  }
+
+})
 
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => console.log(`My first Express app - listening on port ${PORT}!`));
+app.listen(PORT, () => console.log(`Fileuploader app - listening on port ${PORT}!`));

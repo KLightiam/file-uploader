@@ -10,6 +10,30 @@
   <% if (locals.user) {%>
     <a class="logout" href="/log-out">LOG OUT</a>
     <h2 class="logged">Welcome <span><%= user.username %></span>,</h2>
+    <div class="files-container">
+      <p class="filename-heading"><strong> Saved Files </strong></p>
+      <!-- <button class="view-file">View File</button>
+      <button class="delete-file">Delete File</button> -->
+    </div>
+    <%= console.log(user.files) %>
+    <% if (user.files.length > 0){ %>
+      <% user.files.map((file) => {%>
+        <div class="files-container">
+          <p class="filename"><%= file.name %></p>
+          <button class="view-file">View File</button>
+          <button class="delete-file">Delete File</button>
+          <button class="download-file">Download</button>
+        </div>
+      <% })}; %>
+    <div class="upload-file">
+      <form action="/<%= user.id %>/uploads" method="post" enctype="multipart/form-data">
+        <div class="choose-file">
+          <label for="upload">Click to select file(s)</label>
+          <input type="file" name="upload" id="upload">
+        </div>
+        <input type="submit" value="Upload file(s)">
+      </form>
+    </div>
   <% } else { %>
     <div class="not-logged">
       <h1>Welcome, <br> Please sign in</h1>
