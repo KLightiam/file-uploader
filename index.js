@@ -200,7 +200,10 @@ app.post('/:id/uploads', upload.array('upload',10), (req,res,next)=>{
         files:{
           create:{
             name: file.originalname,
-            storedName: file.filename
+            storedName: file.filename,
+            size: (file.size / (1024 * 1024)).toFixed(2),
+            type: file.mimetype,
+            date: new Date(),
           }
         }
       }
@@ -214,6 +217,40 @@ app.post('/:id/uploads', upload.array('upload',10), (req,res,next)=>{
     console.log(err);
   }
 
+})
+
+//view file
+app.get('/:userId/view/:fileId', async(req,res)=>{
+  try{
+    // const userId = req.params.userId;
+    const fileId = req.params.fileId;
+    const file = await prisma.file.findUnique({
+      where:{
+        id: fileId
+      },
+      include:{
+        owner: true
+      }
+    })
+    res.render('view-file', {file: file});
+  }catch(err){
+    console.log(err);
+  }
+})
+
+//delete file
+app.post('/:userId/delete/:fileId', async(req,res)=>{
+  try{
+    const fileId = req.params.fileId;
+    await prisma.file.delete({
+      where:{
+        id: fileId
+      }
+    })
+    res.redirect('/');
+  }catch(err){
+    console.log(err);
+  }
 })
 
 

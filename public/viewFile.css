@@ -1,0 +1,24 @@
+body{
+    background-color:ghostwhite;
+}
+
+.logo{
+    color: rgb(84, 40, 125);
+    font-size: 2rem;
+}
+.logo > a{
+    text-decoration: none;
+}
+
+.logout{
+    position: absolute;
+    text-decoration: none;
+    /* margin-left: auto; */
+    right: 10px;
+    top: 10px;
+
+}
+
+.logged > span{
+    color: rgb(84, 40, 125);
+}

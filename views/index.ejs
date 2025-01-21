@@ -3,26 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="index.css">
-  <title>FileHolder</title>
+  <title>🗃️FileUploader</title>
 </head>
 <body>
-  <div class="logo"><a href="/">FileHolder🗃️</a></div>
+  <div class="logo"><a href="/">FileUploader🗃️</a></div>
   <% if (locals.user) {%>
     <a class="logout" href="/log-out">LOG OUT</a>
     <h2 class="logged">Welcome <span><%= user.username %></span>,</h2>
     <div class="files-container">
       <p class="filename-heading"><strong> Saved Files </strong></p>
-      <!-- <button class="view-file">View File</button>
-      <button class="delete-file">Delete File</button> -->
     </div>
     <%= console.log(user.files) %>
     <% if (user.files.length > 0){ %>
       <% user.files.map((file) => {%>
         <div class="files-container">
           <p class="filename"><%= file.name %></p>
-          <button class="view-file">View File</button>
-          <button class="delete-file">Delete File</button>
-          <button class="download-file">Download</button>
+          <div>
+            <form action="/<%= user.id %>/view/<%= file.id %>" method="get">
+              <button class="view-file">View File</button>
+            </form>
+          </div>
+          <div>
+            <form action="/<%= user.id %>/delete/<%= file.id %>" method="post">
+              <button class="delete-file">Delete File</button>
+            </form>
+          </div>
+          <div>
+            <a href="../public/data/uploads/<%= file.storedName %>" download><button class="download-file">Download</button></a>
+          </div>
         </div>
       <% })}; %>
     <div class="upload-file">

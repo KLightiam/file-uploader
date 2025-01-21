@@ -56,6 +56,16 @@ input{
     height: 1.5rem;
 }
 
+.files-container > div > form{
+    width: 100%;
+}
+
+.files-container > div > a > button{
+    width: 100%;
+    
+
+}
+
 button{
     background-color: rgb(84, 40, 125);
     color: aliceblue;
