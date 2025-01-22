@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="viewFile.css">
+    <link rel="stylesheet" type="text/css" href="/viewFile.css">
     <title>🗃️FileUploader</title>
 </head>
 <body>
@@ -11,21 +11,22 @@
     <% if (locals.file) {%>
       <a class="logout" href="/log-out">LOG OUT</a>
       <h2 class="logged">Hello <span><%= file.owner.username %></span>,</h2>
-    <% } %>
     <div class="file-container">
       <p class="filename-heading"><strong>File Details</strong></p>
-      <p class="filename">File Name: <%= file.name %></p>
-      <p class="filename">Stored Name: <%= file.storedName %></p>
-      <p class="filename">File Size: <%= file.size %> MB</p>
-      <p class="filename">File Type: <%= file.type %></p>
-      <p class="filename">Upload Date: <%= file.date %></p>
+      <p class="filename">File Name: <span><%= file.name %></span></p>
+      <p class="filename">Stored Name: <span><%= file.storedName %></span></p>
+      <p class="filename">File Size: <span><%= file.size %> MB</span></p>
+      <p class="filename">File Type: <span><%= file.type %></span></p>
+      <p class="filename">Upload Date: <span><%= file.date %></span></p>
+    </div>
       <div>
-        <a href="../public/data/uploads/<%= file.storedName %>" download><button class="download-file">Download</button></a>
+        <a href="/data/uploads/<%= file.storedName %>" download><button class="download-file">Download</button></a>
       </div>
       <div>
         <form action="/<%= file.owner.id %>/delete/<%= file.id %>" method="post">
           <button class="delete-file">Delete File</button>
         </form>
-      </div>    
+      </div>
+    <% } %>    
 </body>
 </html>

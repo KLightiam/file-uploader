@@ -22,3 +22,25 @@ body{
 .logged > span{
     color: rgb(84, 40, 125);
 }
+
+.file-container{
+    font-size: 1.2rem;
+}
+
+.filename-heading{
+    color: rgb(84, 40, 125);
+    font-size: 1.4rem;
+}
+.filename > span{
+    color:rgb(84, 40, 125) ;
+}
+
+button{
+    background-color: rgb(84, 40, 125);
+    color: aliceblue;
+    border: 0px;
+    height: 26px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
