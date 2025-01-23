@@ -18,9 +18,10 @@
       <p class="filename">File Size: <span><%= file.size %> MB</span></p>
       <p class="filename">File Type: <span><%= file.type %></span></p>
       <p class="filename">Upload Date: <span><%= file.date %></span></p>
+      <p class="filename">File URL: <span><%= file.url %></span></p>
     </div>
       <div>
-        <a href="/data/uploads/<%= file.storedName %>" download><button class="download-file">Download</button></a>
+        <a href="<%= file.url %>" download><button class="download-file">Download</button></a>
       </div>
       <div>
         <form action="/<%= file.owner.id %>/delete/<%= file.id %>" method="post">

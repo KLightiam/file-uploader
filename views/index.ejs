@@ -13,7 +13,6 @@
     <div class="files-container">
       <p class="filename-heading"><strong> Saved Files </strong></p>
     </div>
-    <%= console.log(user.files) %>
     <% if (user.files.length > 0){ %>
       <% user.files.map((file) => {%>
         <div class="files-container">
@@ -29,7 +28,7 @@
             </form>
           </div>
           <div>
-            <a href="/data/uploads/<%= file.storedName %>" download><button class="download-file">Download</button></a>
+            <a href="<%= file.url %>" download><button class="download-file">Download</button></a>
           </div>
         </div>
       <% })}; %>

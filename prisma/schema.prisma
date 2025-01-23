@@ -31,6 +31,8 @@ model File {
   id String @id @default(cuid())
   name String
   storedName String?
+  url String?
+  publicId String?
   size Decimal?
   type String?
   date DateTime @default(now())

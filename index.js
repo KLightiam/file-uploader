@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require("node:path");
 const express = require("express");
 const session = require("express-session");
@@ -9,8 +10,23 @@ const bcrypt = require("bcryptjs");
 const {PrismaClient} = require('@prisma/client');
 const {body, validationResult} = require("express-validator");
 const prisma = new PrismaClient();
+const cloudinary = require('cloudinary').v2
 
-const upload = multer({dest: "./public/data/uploads/",limits:{fileSize: 1024*1024*5}});
+//cloudinary config
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+//multer config
+const storage = multer.diskStorage({
+  filename: function(req,file,cb){
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({storage: storage,limits:{fileSize: 1024*1024*5}});
 
 const app = express();
 
@@ -174,43 +190,42 @@ app.post("/log-in",
 );
   
 //uploads
-app.post('/:id/uploads', upload.array('upload',10), (req,res,next)=>{
+app.post('/:id/uploads', upload.array('upload',10), async(req,res,next)=>{
   try{
     if(!req.files || req.files.length === 0){
     return res.redirect('/');
     }
    const userId = req.params.id;
-  //  console.log(username);
 
+   const files = req.files;
+   files.forEach(async(file)=>{
+    const results = await cloudinary.uploader.upload(file.path,{
+      folder: "fileuploader"
+    });
+    const url = results.url;
+    const publicId = results.public_id;
 
-  //  const fileDetails = req.files.map((file)=>{
-  //   return{
-  //     name: file.originalname,
-  //     size: (file.size / 1024).toFixed(2),
-  //     path: file.path
-  //   }
-  //  })
-  const files = req.files;
-  files.forEach(async(file)=>{
-     await prisma.user.update({
+    await prisma.user.update({
       where:{
         id:userId
-      },
-      data:{
-        files:{
-          create:{
-            name: file.originalname,
-            storedName: file.filename,
-            size: (file.size / (1024 * 1024)).toFixed(2),
-            type: file.mimetype,
-            date: new Date(),
-          }
-        }
-      }
+       },
+       data:{
+         files:{
+           create:{
+             name: file.originalname,
+             storedName: file.filename,
+             url: url,
+             publicId: publicId,
+             size: (file.size / (1024 * 1024)).toFixed(2),
+             type: file.mimetype,
+             date: new Date(),
+           }
+         }
+       }
      })
-  })
+     res.redirect('/');
+   })
 
-  res.redirect('/');
    
 
   }catch(err){
@@ -242,11 +257,12 @@ app.get('/:userId/view/:fileId', async(req,res)=>{
 app.post('/:userId/delete/:fileId', async(req,res)=>{
   try{
     const fileId = req.params.fileId;
-    await prisma.file.delete({
+    const deletedFile = await prisma.file.delete({
       where:{
         id: fileId
       }
     })
+    cloudinary.uploader.destroy(deletedFile.publicId);
     res.redirect('/');
   }catch(err){
     console.log(err);
