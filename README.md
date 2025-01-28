@@ -1,8 +1,6 @@
-# File Uploader
-
-This project is a simple file uploader application.
 # File Uploader Application
 
+This project is a simple file uploader application.
 This is a Node.js application for uploading, managing, and viewing files. It uses Express.js for the server, Multer for handling file uploads, and Cloudinary for file storage. The application also includes user authentication and session management.
 
 ## Features
