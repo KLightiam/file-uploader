@@ -49,10 +49,11 @@ This is a Node.js application for uploading, managing, and viewing files. It use
    SESSION_SECRET=your_session_secret
    ```
 
-4. Run Prisma migrations to set up the database:
+4. Run Prisma migrations to set up the database and generate Prisma Client:
 
    ```bash
    npx prisma migrate dev
+   npx prisma generate
    ```
 
 ## Usage
@@ -60,7 +61,7 @@ This is a Node.js application for uploading, managing, and viewing files. It use
 1. Start the application:
 
    ```bash
-   npm start
+   npm run start
    ```
 
 2. Open your browser and navigate to `http://localhost:3000`.
